@@ -85,12 +85,11 @@ class OpenClassroomsAPI {
 	// Manages a response with partial content
 	if ($code == 206) {
 	  if (isset($header['Content-Range'])) {
-	    // Parses the 'Content-Range' header field
 	    $range = json_decode(preg_replace('|\s*items\s*([0-9]+)-([0-9]+)/([0-9]+)|', '{ "start-index":"$1", "stop-index":"$2", "total-length":"$3"}', $header['Content-Range']), true);
 	    if ($range) {
 	      $header['Content-Range'] = $range;
-	      // Iterates though the content ranges
-	      self::doGetContentRange($request, $range, $body, $error);
+	      if (isset($request['with-range']) && $request['with-range'])
+		self::doGetContentRange($request, $range, $body, $error);
 	    } else
 	      $error = "Undefined 'Content-Range' format, Content-Range => '".$header['Content-Range']."'";
 	  } else
@@ -107,32 +106,29 @@ class OpenClassroomsAPI {
 			'body' => $jresult ? $jresult : $body,
 			'error' => $error,
 			);
-      } else {
+      } else
 	$result = array('error' => "Unable to perform a curl request, error: ".curl_error($curl_request), 'code' => $code);
-      }
       curl_close($curl_request);
       return $result;
     }
   }
   // Retrieves partial content when content range (i.e., code 206)
   private static function doGetContentRange($request, $range, &$body, &$error) {
-    if (isset($request['with-range']) && $request['with-range']) {
-      $length = $range['stop-index'] - $range['start-index'] + 1;
-      for($next_code = 206, $nn = 2; (!$error) && $next_code == 206 && $nn <= 1 + $range['total-length'] / $length; $nn++) {
-	$next_request = 
-	  array_merge($request, 
-		      array(
-			    'with-range' => false,
-			    'header' => 
-			    array_merge(isset($request['header']) ? $request['header'] : array(),
-					array("Range: items=".($range['stop-index']+1)."-".min($range['total-length'],$range['stop-index']+$length)))));
-	$next_result = self::httpRequest($next_request);
-	$next_code = $next_result['code'];
-	$range = $next_result['header']['Content-Range'];
-	$body[] = $next_result['body'];
-	if ($next_code != 206 || $next_result['error'] || !is_array($range))
-	  $error = "Error during 'Content-Range' request #".$nn.", code=".$next_code.", header=".print_r($next_result['header'], true)." error='".$next_result['error']."'";
-      }
+    $length = $range['stop-index'] - $range['start-index'] + 1;
+    for($next_code = 206, $nn = 2; (!$error) && $next_code == 206 && $nn <= 1 + $range['total-length'] / $length; $nn++) {
+      $next_request = 
+	array_merge($request, 
+		    array(
+			  'with-range' => false,
+			  'header' => 
+			  array_merge(isset($request['header']) ? $request['header'] : array(),
+				      array("Range: items=".($range['stop-index']+1)."-".min($range['total-length'],$range['stop-index']+$length)))));
+      $next_result = self::httpRequest($next_request);
+      $next_code = $next_result['code'];
+      $range = $next_result['header']['Content-Range'];
+      $body[] = $next_result['body'];
+      if ($next_code != 206 || $next_result['error'] || !is_array($range))
+	$error = "Error during 'Content-Range' request #".$nn.", code=".$next_code.", header=".print_r($next_result['header'], true)." error='".$next_result['error']."'";
     }
   }
   /** Registers the username:password in the WP database. 
