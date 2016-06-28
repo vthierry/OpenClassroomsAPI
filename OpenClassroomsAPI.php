@@ -10,8 +10,7 @@
 class OpenClassroomsAPI {
 
   // Tests the interface
-  // @see http://localhost/wordpress/wp-admin/admin.php?page=class_code_admin&show_oc_courses=please_do_it for local test
-  // @see http://httpbin.org/basic-auth/user/passwd to test the Basic Auth 
+    // @see http://httpbin.org/basic-auth/user/passwd to test the Basic Auth 
   public static function test() { 
     echo '<h1>RESULT</h1><hr><pre>'.print_r(OpenClassroomsAPI::getData("courses"), true).'</pre><hr>';
   }
@@ -91,25 +90,9 @@ class OpenClassroomsAPI {
 	    if ($range) {
 	      $header['Content-Range'] = $range;
 	      // Iterates though the content ranges
-	      if (isset($request['with-range']) && $request['with-range']) {
-		$length = $range['stop-index'] - $range['start-index'] + 1;
-		for($next_code = $code, $nn = 2; (!$error) && $next_code == 206 && $nn <= 1 + $range['total-length'] / $length; $nn++) {
-		  $next_request = 
-		    array_merge($request, array(
-						'with-range' => false,
-						'header' => 
-						array_merge(isset($request['header']) ? $request['header'] : array(),
-							    array("Range: items=".($range['stop-index']+1)."-".min($range['total-length'],$range['stop-index']+$length)))));
-		  $next_result = self::httpRequest($next_request);
-		  $next_code = $next_result['code'];
-		  $range = $next_result['header']['Content-Range'];
-		  $body[] = $next_result['body'];
-		  if ($next_code != 206 || $next_result['error'] || !is_array($range))
-		    $error = "Error during 'Content-Range' request #".$nn.", code=".$next_code.", header=".print_r($next_result['header'], true)." error='".$next_result['error']."'";
-		}
-	      }
+	      self::doGetContentRange($request, $range, $body, $error);
 	    } else
-	      $error = "Undefined 'Content-Range' format with a code 206, Content-Range => '".$header['Content-Range']."'";
+	      $error = "Undefined 'Content-Range' format, Content-Range => '".$header['Content-Range']."'";
 	  } else
 	    $error = "Undefined 'Content-Range' with a code 206";
 	}
@@ -131,7 +114,27 @@ class OpenClassroomsAPI {
       return $result;
     }
   }
-
+  // Retrieves partial content when content range (i.e., code 206)
+  private static function doGetContentRange($request, $range, &$body, &$error) {
+    if (isset($request['with-range']) && $request['with-range']) {
+      $length = $range['stop-index'] - $range['start-index'] + 1;
+      for($next_code = 206, $nn = 2; (!$error) && $next_code == 206 && $nn <= 1 + $range['total-length'] / $length; $nn++) {
+	$next_request = 
+	  array_merge($request, 
+		      array(
+			    'with-range' => false,
+			    'header' => 
+			    array_merge(isset($request['header']) ? $request['header'] : array(),
+					array("Range: items=".($range['stop-index']+1)."-".min($range['total-length'],$range['stop-index']+$length)))));
+	$next_result = self::httpRequest($next_request);
+	$next_code = $next_result['code'];
+	$range = $next_result['header']['Content-Range'];
+	$body[] = $next_result['body'];
+	if ($next_code != 206 || $next_result['error'] || !is_array($range))
+	  $error = "Error during 'Content-Range' request #".$nn.", code=".$next_code.", header=".print_r($next_result['header'], true)." error='".$next_result['error']."'";
+      }
+    }
+  }
   /** Registers the username:password in the WP database. 
    * - The present implementation stores the data as a base64 site option.
    * - This and the getBasicAuth() methods must be overwitten for a non wordpress implementation.
