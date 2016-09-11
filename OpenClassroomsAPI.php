@@ -96,7 +96,7 @@ class OpenClassroomsAPI {
       return $this->userData('access_token');
     } else {
       // Switchs to the authentification URL
-      self::httpRedirect('http://private-anon-dfbe24371-openclassrooms.apiary-mock.com/api/authorize?response_type=code&client_id='.urlencode(self::$client_id).'&redirect_uri='.urlencode(self::getCurrentURL()).'&scope=profile&state='.$this->userData('state'));
+      self::httpRedirect('https://openclassrooms.com/oauth2/authorize?response_type=code&client_id='.urlencode(self::$client_id).'&redirect_uri='.urlencode(self::getCurrentURL()).'&scope=profile&state='.$this->userData('state'));
     }
   }
   /** Implements the hook to manage redirection URL during OAuth2 token request. 

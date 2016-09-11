@@ -6,7 +6,7 @@
 * Donate link: http://sparticipatives.gforge.inria.fr/wp-plugins/#donate
 * Requires: a recent PHP (non critical) -with-curl (using libcurl.a via curl_ functions) and wordpress
 
-* Documentation: https://github.com/vthierry/OpenClassroomsAPI/doc
+* Documentation: http://vthierry.github.io/OpenClassroomsAPI
 
 ## File description
 
