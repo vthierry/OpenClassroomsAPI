@@ -23,6 +23,7 @@ class OpenClassroomsAPI {
   // Tests the interface
   // @see http://httpbin.org/basic-auth/user/passwd to test the Basic Auth 
   public static function test() { 
+    return;
     $api = new OpenClassroomsAPI();
     //echo '<h1>RESULT</h1><hr><pre>'.print_r($api->getData("courses"), true).'</pre><hr>';
     $api->getAccessToken();
@@ -75,11 +76,11 @@ class OpenClassroomsAPI {
       // Checks if the access token has to be refreshed
       if ($this->userData('access_token_expires_at') < time()) {
 	$acces_token_request = self::httpRequest(array(
-          'url' => 'http://private-anon-dfbe24371-openclassrooms.apiary-mock.com/api/token', 
+	  'url' => 'https://openclassrooms.com/api/v0/token',
           'header' => array("Content-Type: application/json", "Authorization: Basic ".self::getAuth('BasicAuth')),
           'post' => '{
             "grant_type":"refresh_token",
-            "client_id":"'.self::$client_id.'",
+            "client_id":"'.self::getAuth('OAuth2/client_id').'",
             "refresh_token": "'.$this->userData('refresh_token').'"
         }'));
 	echo "<pre> Refresh token response".print_r($acces_token_request, true)."</pre>";
@@ -96,7 +97,7 @@ class OpenClassroomsAPI {
       return $this->userData('access_token');
     } else {
       // Switchs to the authentification URL
-      self::httpRedirect('https://openclassrooms.com/oauth2/authorize?response_type=code&client_id='.urlencode(self::$client_id).'&redirect_uri='.urlencode(self::getCurrentURL()).'&scope=profile&state='.$this->userData('state'));
+      self::httpRedirect('https://openclassrooms.com/oauth2/authorize?response_type=code&scope=profile&client_id='.urlencode(self::getAuth('OAuth2/client_id')).'&redirect_uri='.urlencode(self::getCurrentURL()).'&state='.$this->userData('state'));
     }
   }
   /** Implements the hook to manage redirection URL during OAuth2 token request. 
@@ -112,7 +113,7 @@ class OpenClassroomsAPI {
         'header' => array("Content-Type: application/json", "Authorization: Basic ".self::getAuth('BasicAuth')),
         'post' => '{
           "grant_type":"authorization_code",
-          "client_id":"'.self::$client_id.'",
+          "client_id":"'.self::getAuth('OAuth2/client_id').'",
           "redirect_uri":"'.self::getCurrentURL().'",
           "code": "'.$this->userData('code').'"
         }'));
