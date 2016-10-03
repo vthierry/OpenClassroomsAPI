@@ -37,7 +37,7 @@ class OpenClassroomsAPI {
   /** Gets the OpenClassroooms user learning activity for the registered courses
    * -> NOT YET IMPOEMENTED JUST A PICE OF CODE
    */
-  public function getUserLearningActivity($courses_slug = array('decouvrir-la-programmation-creative', 'manipuler-l-information')) {
+  private function getUserLearningActivity($courses_slug = array('decouvrir-la-programmation-creative', 'manipuler-l-information')) {
     if (!$this->userData('user_id')) {
       $user_public_profile = self::httpRequest(array(
 						     'url' => 'https://openclassrooms.com/api/v0/',
