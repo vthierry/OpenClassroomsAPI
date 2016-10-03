@@ -32,6 +32,7 @@
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classOpenClassroomsAPI-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">OpenClassroomsAPI Class Reference</div>  </div>
@@ -43,15 +44,15 @@
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7ddbd5234856c2764be302b3d8565aef"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenClassroomsAPI.html#a7ddbd5234856c2764be302b3d8565aef">getProfile</a> ()</td></tr>
-<tr class="memdesc:a7ddbd5234856c2764be302b3d8565aef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the user profile information from the OpenClassroooms API.  <a href="#a7ddbd5234856c2764be302b3d8565aef">More...</a><br /></td></tr>
-<tr class="separator:a7ddbd5234856c2764be302b3d8565aef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a783484df9a1246cd2f40a5082736a7e8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenClassroomsAPI.html#a783484df9a1246cd2f40a5082736a7e8">getData</a> ($name)</td></tr>
-<tr class="memdesc:a783484df9a1246cd2f40a5082736a7e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a given data structure from the OpenClassroooms API.  <a href="#a783484df9a1246cd2f40a5082736a7e8">More...</a><br /></td></tr>
-<tr class="separator:a783484df9a1246cd2f40a5082736a7e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace314c6784c132d03c5558a3d5b3a22b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenClassroomsAPI.html#ace314c6784c132d03c5558a3d5b3a22b">getUserLearningActivity</a> ($courses_slug=array('decouvrir-la-programmation-creative', 'manipuler-l-information'))</td></tr>
+<tr class="memdesc:ace314c6784c132d03c5558a3d5b3a22b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the OpenClassroooms user learning activity for the registered courses -&gt; NOT YET IMPOEMENTED JUST A PICE OF CODE.  <a href="#ace314c6784c132d03c5558a3d5b3a22b">More...</a><br /></td></tr>
+<tr class="separator:ace314c6784c132d03c5558a3d5b3a22b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aee6001a4b84f74a23bde0f3ce6d5f3b4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenClassroomsAPI.html#aee6001a4b84f74a23bde0f3ce6d5f3b4">getAccessToken</a> ()</td></tr>
 <tr class="memdesc:aee6001a4b84f74a23bde0f3ce6d5f3b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encapsulates a OAuth2 token request.  <a href="#aee6001a4b84f74a23bde0f3ce6d5f3b4">More...</a><br /></td></tr>
 <tr class="separator:aee6001a4b84f74a23bde0f3ce6d5f3b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43f1815b4822632345c40f566372afb7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenClassroomsAPI.html#a43f1815b4822632345c40f566372afb7">do_token_request</a> ($request)</td></tr>
+<tr class="memdesc:a43f1815b4822632345c40f566372afb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements the hook to manage redirection URL during OAuth2 token request.  <a href="#a43f1815b4822632345c40f566372afb7">More...</a><br /></td></tr>
+<tr class="separator:a43f1815b4822632345c40f566372afb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2bae74ae6e3347f87f106554e8a889ac"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenClassroomsAPI.html#a2bae74ae6e3347f87f106554e8a889ac">userData</a> ($name, $value=false)</td></tr>
 <tr class="memdesc:a2bae74ae6e3347f87f106554e8a889ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets/Sets the user data from the WP database.  <a href="#a2bae74ae6e3347f87f106554e8a889ac">More...</a><br /></td></tr>
 <tr class="separator:a2bae74ae6e3347f87f106554e8a889ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -69,11 +70,21 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a90e53ef2394e00ce430ecc83d08cb7e5"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenClassroomsAPI.html#a90e53ef2394e00ce430ecc83d08cb7e5">getCurrentURL</a> ()</td></tr>
 <tr class="memdesc:a90e53ef2394e00ce430ecc83d08cb7e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current HTTP URL.  <a href="#a90e53ef2394e00ce430ecc83d08cb7e5">More...</a><br /></td></tr>
 <tr class="separator:a90e53ef2394e00ce430ecc83d08cb7e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f8ad5791d6c8c106de72c868eca563d"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenClassroomsAPI.html#a3f8ad5791d6c8c106de72c868eca563d">write_log</a> ($message, $append=true)</td></tr>
+<tr class="separator:a3f8ad5791d6c8c106de72c868eca563d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
+Static Public Attributes</h2></td></tr>
+<tr class="memitem:a8c1fc37a696110dae7086ec35a34ff6c"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenClassroomsAPI.html#a8c1fc37a696110dae7086ec35a34ff6c">$api</a></td></tr>
+<tr class="separator:a8c1fc37a696110dae7086ec35a34ff6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Defines the functionnalities to acces to the OpenClassroooms API. </p>
 <p>This codes is organized in four layers:</p><ul>
-<li>OpenClassrooms user data retrieval<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>(still in dev)</dd></dl>
+<li>OpenClassrooms user data retrieval<ul>
+<li><a class="el" href="classOpenClassroomsAPI.html#ace314c6784c132d03c5558a3d5b3a22b" title="Gets the OpenClassroooms user learning activity for the registered courses -&gt; NOT YET IMPOEMENTED JUS...">getUserLearningActivity()</a><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>(still in dev)</dd></dl>
+</li>
+</ul>
 </li>
 </ul>
 <dl class="section see"><dt>See also</dt><dd><a href="https://github.com/vthierry/OpenClassroomsAPI">https://github.com/vthierry/OpenClassroomsAPI</a> for download </dd>
@@ -82,8 +93,32 @@ Static Public Member Functions</h2></td></tr>
 <dd>
 <a href="http://docs.openclassrooms.apiary.io/#">http://docs.openclassrooms.apiary.io/#</a> for OpenClassrooms documentation </dd></dl>
 
-<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00021">21</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00022">22</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a43f1815b4822632345c40f566372afb7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">OpenClassroomsAPI::do_token_request </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$request</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Implements the hook to manage redirection URL during OAuth2 token request. </p>
+
+<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00099">99</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+
+<p>References <a class="el" href="OpenClassroomsAPI_8php_source.html#l00280">userData()</a>.</p>
+
+<p>Referenced by <a class="el" href="OpenClassroomsAPI_8php_source.html#l00025">test()</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="aee6001a4b84f74a23bde0f3ce6d5f3b4"></a>
 <div class="memitem">
 <div class="memproto">
@@ -105,9 +140,9 @@ Static Public Member Functions</h2></td></tr>
 </li>
 </ul>
 
-<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00073">73</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00063">63</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
 
-<p>References <a class="el" href="OpenClassroomsAPI_8php_source.html#l00282">userData()</a>.</p>
+<p>References <a class="el" href="OpenClassroomsAPI_8php_source.html#l00280">userData()</a>.</p>
 
 </div>
 </div>
@@ -134,54 +169,29 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Gets the current HTTP URL. </p>
 
-<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00256">256</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00253">253</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a783484df9a1246cd2f40a5082736a7e8"></a>
+<a class="anchor" id="ace314c6784c132d03c5558a3d5b3a22b"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">OpenClassroomsAPI::getData </td>
+          <td class="memname">OpenClassroomsAPI::getUserLearningActivity </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>$name</em></td><td>)</td>
+          <td class="paramname"><em>$courses_slug</em> = <code>array('decouvrir-la-programmation-creative',&#160;'manipuler-l-information')</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Gets a given data structure from the OpenClassroooms API. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">$name</td><td>The data structure name, e.g. "courses" </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>An associative array of the form: <code>{ "code" : "value", "body" = { … } }</code>. </dd></dl>
-
-<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00053">53</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
-
-</div>
-</div>
-<a class="anchor" id="a7ddbd5234856c2764be302b3d8565aef"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">OpenClassroomsAPI::getProfile </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Gets the user profile information from the OpenClassroooms API. </p>
-<p>-&gt; NOT YET TESTED , NOT SURE OF THE CODE </p>
+<p>Gets the OpenClassroooms user learning activity for the registered courses -&gt; NOT YET IMPOEMENTED JUST A PICE OF CODE. </p>
 
 <p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00040">40</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+
+<p>References <a class="el" href="OpenClassroomsAPI_8php_source.html#l00269">$api</a>, and <a class="el" href="OpenClassroomsAPI_8php_source.html#l00280">userData()</a>.</p>
 
 </div>
 </div>
@@ -215,7 +225,7 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00250">250</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00246">246</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
 
 </div>
 </div>
@@ -270,7 +280,7 @@ Static Public Member Functions</h2></td></tr>
 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a href="http://php.net/manual/fr/ref.curl.php">http://php.net/manual/fr/ref.curl.php</a> </dd></dl>
 
-<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00153">153</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00148">148</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
 
 </div>
 </div>
@@ -296,6 +306,8 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00025">25</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+
+<p>References <a class="el" href="OpenClassroomsAPI_8php_source.html#l00099">do_token_request()</a>.</p>
 
 </div>
 </div>
@@ -344,9 +356,70 @@ Static Public Member Functions</h2></td></tr>
 </li>
 </ul>
 
-<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00282">282</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00280">280</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
 
-<p>Referenced by <a class="el" href="OpenClassroomsAPI_8php_source.html#l00073">getAccessToken()</a>.</p>
+<p>Referenced by <a class="el" href="OpenClassroomsAPI_8php_source.html#l00099">do_token_request()</a>, <a class="el" href="OpenClassroomsAPI_8php_source.html#l00063">getAccessToken()</a>, and <a class="el" href="OpenClassroomsAPI_8php_source.html#l00040">getUserLearningActivity()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3f8ad5791d6c8c106de72c868eca563d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static OpenClassroomsAPI::write_log </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$message</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$append</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00321">321</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="a8c1fc37a696110dae7086ec35a34ff6c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">OpenClassroomsAPI::$api</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00269">269</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+
+<p>Referenced by <a class="el" href="OpenClassroomsAPI_8php_source.html#l00040">getUserLearningActivity()</a>.</p>
 
 </div>
 </div>
@@ -354,4 +427,4 @@ Static Public Member Functions</h2></td></tr>
 <li><a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a></li>
 </ul>
 </div><!-- contents -->
-<hr/><div align='right'><tt>Class'Code middleware (version of 2016-09-11 at 17:51:28) </tt> </div><hr/></body></html>
+<hr/><div align='right'><tt>Class'Code middleware (version of 2016-10-03 at 16:55:19) </tt> </div><hr/></body></html>
