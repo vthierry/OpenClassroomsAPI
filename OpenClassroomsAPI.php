@@ -2,20 +2,34 @@
 /**
  * Defines the functionnalities to acces to the OpenClassroooms API.
  *
- * This codes is organized in four layers:
+ * <i>Usage</i>: <pre>
+ *  global $OpenClassroomsAPI;
+ *  $data = $OpenClassroomsAPI->getUserLearningActivity();</pre>
+ * - The only routine to call is getUserLearningActivity() lower layer's call are transparent to the application layer
+ *
+ * <i>Code implementation</i>: The code is organized in four layers:
  * - OpenClassrooms user data retrieval 
- *   - getUserLearningActivity() @todo(still in dev)
+ *   - getUserLearningActivity()
  * - OAuth2 token request method: 
  *   - getAccessToken() encapsultates the OAuth2 protocol
  * - Generic HTTP request and redirection methods: 
  *   - httpRequest() httpRedirect() and getCurrentURL()
- * - Wordpress dependent methods: 
+ * - Wordpress dependent methods and error management
  *   - _construct() to hook the do_token_request() method
  *   - userData() for remanent user data management, 
- *   - getAuth()  authentification parameters retrieval.
- * - Error management
+ *   - getAuth() secure local authentification parameters retrieval.
  *   - errorPage() user level error page if the syndication fails.
  *   - reportLog() to report an error in the log system.
+ *
+ * <i>OAuth2 parameters registration</i>:
+ * - A <tt>.httpkeys</tt> PHP file must be present in the same directory as this source file (and never added to the git or svn !!!).
+ * - It must contains the information in an array of the form <tt>&lt;php $httpkeys = array(</tt>
+ *   - 'OAuth2/client_id'    => ..., // The OAuth2 client ID
+ *   - 'OAuth2/basic_auth'   => ..., // The OAuth2 login:passwd basic auth
+ *   - 'OAuth2/redirect_uri' => ..., // The OAuth2 rediect URI
+ *   - 'OAuth2/help_url'     => ..., // The user help url if the syndication fails
+ *   - 'OAuth2/log_email'    => ..., // The mail to send error logs, in any (optional)
+ * <tt>); ?></tt>
  *
  * @see https://github.com/vthierry/OpenClassroomsAPI for download
  * @see <a href="https://github.com/vthierry/OpenClassroomsAPI/blob/master/README.md">README.md</a> and <a href="https://github.com/vthierry/OpenClassroomsAPI/blob/master/LICENSE">LICENCE</a> for meta information
@@ -26,74 +40,87 @@
 class OpenClassroomsAPI {
 
   // Tests the interface
-  // Logs file:///user/vthierry/home/ongoing/mecsci/Class'Code/wp-plugins/wordpress/wp-content/logs/
-  // Pad: https://pad.inria.fr/p/bx42JkrE5JW0HBIQ_plateforme_classcode
-  //
   public static function test() { 
     global $OpenClassroomsAPI;
     $OpenClassroomsAPI->do_token_request($_REQUEST);
+    echo "<pre>running ...</pre>"; echo "<pre>".print_r($OpenClassroomsAPI->getUserLearningActivity(true, true), true)."</pre>";
+  }
+  public static function reset() { 
+    global $OpenClassroomsAPI;
     echo "<pre>cleaning ...</pre>"; $OpenClassroomsAPI->clearAccessToken();
-    echo "<pre>running ...</pre>"; echo "<pre>".print_r($OpenClassroomsAPI->getUserLearningActivity())."</pre>";
   }
   
+  ////////////////////////////////////////////////////////////////////////////////
+  
   //
-  // OpenClassrooms user data retrieval : still in development !
+  // OpenClassrooms user data retrieval
   //
 
   /** Gets the OpenClassroooms user learning activity for the registered courses.
-   * @return the userData user_learning_activity field or false if the operation fails.
+   * @param $update If true, request on https://api.openclassrooms.com the user_public_profile, user_followed_courses and related table-of-content to bluid the user-learning-activity. If false, simply returns the last stored value.
+   * @param $as_string If true, returns the data as JSON string, else as a PHP array.
+   * @return the userData user_learning_activity field or false if the operation fails. See usedData() for details.
    */
-  private function getUserLearningActivity() {
-    // Gets user_public_profile
-    {
-      $user_public_profile = self::httpRequest(array(
-        'url' => 'https://api.openclassrooms.com/me',
-	'header' => array(
-			  "Accept: application/json",
-			  "Content-Type:application/json",
-			  "Authorization: Bearer ".$this->getAccessToken())));
-      if ($user_public_profile['code'] == 200) {
-	$this->userData('user_public_profile', $user_public_profile['body']);
-	$this->userData('user_id', $user_public_profile['body']['id']);
-      } else {
-	self::reportLog("OpenClassroomsAPI::getUserLearningActivity(): user_public_profile error ".print_r($user_public_profile, true));
-	return false;
-      }
-    }
-    // Gets user_followed_courses
-    {
-      $user_followed_course = self::httpRequest(array(
-        'url' => 'https://api.openclassrooms.com/users/'.$this->userData('user_id').'/followed-courses/',
-	'header' => array(
-			  "Accept: application/json",
-			  "Content-Type:application/json",
-			  "Authorization: Bearer ".$this->getAccessToken())));
-      if ($user_followed_course['code'] == 200) {
-	// Gets courses table of contents for each course
-	foreach($user_followed_course['body'] as &$course) {
-	  $course_content = self::httpRequest(array(
-	    'url' => 'https://api.openclassrooms.com/v0/users/'.$this->userData('user_id').'/courses/'.$course['id'].'/table-of-content/',
-	    'header' => array(
-	                      "Accept: application/json",
-			      "Content-Type:application/json",
-			      "Authorization: Bearer ".$this->getAccessToken())));
-	  if ($course_content['code'] == 200) {
-	    $course['table-of-content'] = $course_content['body'];
-	  } else {
-	    $course['table-of-content'] = "unable to retrieve table-of-content";
-	    self::reportLog("OpenClassroomsAPI::getUserLearningActivity(): course_content error ".print_r($course_content, true));
-	    break;
-	  }
+  public function getUserLearningActivity($update = true, $as_string = false) {
+    if ($update) {
+      // Gets user_public_profile
+      {
+	$user_public_profile = self::httpRequest(array(
+          'url' => 'https://api.openclassrooms.com/me',
+	  'header' => array(
+			    "Accept: application/json",
+			    "Content-Type:application/json",
+			    "Authorization: Bearer ".$this->getAccessToken())));
+	if ($user_public_profile['code'] == 200) {
+	  $this->userData('user_public_profile', $user_public_profile['body']);
+	  $this->userData('user_id', $user_public_profile['body']['id']);
+	} else {
+	  self::reportLog("OpenClassroomsAPI::getUserLearningActivity(): user_public_profile error ".print_r($user_public_profile, true));
+	  return false;
 	}
-	$this->userData('user_learning_activity', $user_followed_course['body']);
-	return $this->userData('user_followed_course');
-      } else {
-	self::reportLog("OpenClassroomsAPI::getUserLearningActivity(): user_public_profile error".print_r($user_public_profile, true));
-	return false;
+      }
+      // Gets user_followed_courses
+      {
+	$user_followed_course = self::httpRequest(array(
+          'url' => 'https://api.openclassrooms.com/users/'.$this->userData('user_id').'/followed-courses/',
+	  'header' => array(
+			    "Accept: application/json",
+			    "Content-Type:application/json",
+			    "Authorization: Bearer ".$this->getAccessToken())));
+	if ($user_followed_course['code'] == 200) {
+	  // Cleans useless data and Gets courses table of contents for each course
+	  foreach($user_followed_course['body'] as &$course) {
+	    // Here useless data is cleaned
+	    foreach(array('creatorPartners', 'authors', 'description') as $item)
+	      unset($course[$item]);
+	    $course_content = self::httpRequest(array(
+	      'url' => 'https://api.openclassrooms.com/users/'.$this->userData('user_id').'/courses/'.$course['id'].'/table-of-content',
+	      'header' => array(
+				"Accept: application/json",
+				"Content-Type:application/json",
+				"Authorization: Bearer ".$this->getAccessToken())));
+	    if ($course_content['code'] == 200) {
+	      $course['table-of-content'] = $course_content['body'];
+	    } else {
+	      $course['table-of-content'] = "unable to retrieve table-of-content";
+	      self::reportLog("OpenClassroomsAPI::getUserLearningActivity(): course_content error ".print_r($course_content, true));
+	    }
+	  }
+	  $this->userData('user_learning_activity', $user_followed_course['body']);
+	} else {
+	  self::reportLog("OpenClassroomsAPI::getUserLearningActivity(): user_public_profile error".print_r($user_public_profile, true));
+	  return false;
+	}
       }
     }
-    return $this->userData('user_learning_activity');
+    if ($as_string) {
+      return json_encode($this->userData('user_learning_activity'), JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_NUMERIC_CHECK);
+    } else {
+      return $this->userData('user_learning_activity');
+    }
   }
+  
+  ////////////////////////////////////////////////////////////////////////////////
   
   //
   // OAuth2 token request method
@@ -101,6 +128,7 @@ class OpenClassroomsAPI {
 
   /** Encapsulates a OAuth2 token request.
    * - This method automatically detects if an access token exists, has to be refreshed, or if an authentification code has to be granted.
+   * @return The "Authorization: Bearer " access token on succes; otherwise redirects to a user error page if it fails.
    */
   public function getAccessToken() {
     // Checks if an access token is defined
@@ -136,27 +164,28 @@ class OpenClassroomsAPI {
   }
   // Requests authentification
   private function do_authentification() {
+    // Prevents from repetitive authentification failures
+    if ($this->userData('last_authentification') && (time() - $this->userData('last_authentification') < 60)) {
+      self::errorPage("Il y a un problème d'authentification avec OpenClassrooms (échec il y a ".(time() - $this->userData('last_authentification'))." secondes, moins d'une minute)");
+    } else {
+      $this->userData('last_authentification', time());
+    }
     // Switchs to the authentification URL
     self::httpRedirect('https://openclassrooms.com/oauth2/authorize?response_type=code&scope=user_email%20user_public_profile%20user_learning_activity&client_id='.urlencode(self::getAuth('OAuth2/client_id')).'&redirect_uri='.urlencode(self::getAuth('OAuth2/redirect_uri')).'&state='.$this->userData('state'));
   }
   
   /** Clears the OAuth2 data in order to restart an authentification. */
   public function clearAccessToken() {
-    $this->userData('access_token'); $this->user_data['access_token'] = false;
-  }
-
-  // Calls the hook to manage redirection URL during OAuth2 token request. 
-  function __construct() {
-    add_filter('request', array($this, 'do_token_request'), 1, 1);
+    $this->userData('access_token', false, true);
   }
 
   /** Implements the hook to manage redirection URL during OAuth2 token request. 
-   * \private
+   * @param $request The global $_REQUEST parameter.
    */
   public function do_token_request($request) { 
     // Tests if there is a code and if the state is correct.
     if (isset($request['code']) && isset($request['state']) && $request['state'] == $this->userData('state')) {
-      $this->userData('code', urldecode($request['code']));
+      $this->userData('code', /*urldecode-done*/($request['code']));
       // Requires the access token from the code
       $acces_token_request = self::httpRequest(array(
         'url' => 'https://api.openclassrooms.com/oauth2/token',
@@ -180,6 +209,15 @@ class OpenClassroomsAPI {
     return $request;
   }
 
+  /** Calls the hook to manage redirection URL during OAuth2 token request. 
+   * \private
+   */
+  function __construct() {
+    add_filter('request', array($this, 'do_token_request'), 1, 1);
+  }
+
+  ////////////////////////////////////////////////////////////////////////////////
+  
   //
   // Generic HTTP request and redirection methods
   //
@@ -297,6 +335,9 @@ class OpenClassroomsAPI {
 	$error = "Error during 'Content-Range' request #".$nn.", code=".$next_code.", request-header=".print_r($next_request['header'], true)." result-header=".print_r($next_result['header'], true)." error='".$next_result['error']."'";
     }
   }
+
+  //////////////////
+
   /** Encapsulates a HTTP redirection. 
    * - The methods output javascript to replace the location and not header("Location : $url") because some HTML may have previously output.
    * @param $url The redirection URL.
@@ -305,16 +346,21 @@ class OpenClassroomsAPI {
     echo '<script language="javascript">location.replace("'.$url.'");</script>';
     exit(0);
   }
+
+  //////////////////
+
   /** Gets the current HTTP URL. */
   public static function getCurrentURL() {
     return (empty($_SERVER["HTTPS"]) ? "http://" : "https://").$_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"];
   }
   
+  //////////////////////////////////////////////////////////////////////////////// 
+  
   //
   // Wordpress dependent section
   //
-  
-  /** Gets/Sets the user data from the WP database.
+ 
+  /** Gets/Sets the OpenClassroomsAPI user data from the WP database.
    * - This method must be overwitten for a non wordpress implementation.
    * - This method returns the previously registered value, the getUserLearningActivity() method updates the data.
    * @param $name The parameter name. Registered names are:
@@ -328,11 +374,12 @@ class OpenClassroomsAPI {
    *     - @see http://docs.openclassrooms.apiary.io/#reference/learning-activity/courses-followed-by-a-user/get-followed-courses-with-user-information 
    *     - @see http://docs.openclassrooms.apiary.io/#reference/learning-activity/table-of-content-with-user-information/get-table-of-content-with-user-information
    * - Registered by the getAccessToken() method
-   *   - code, state, access_token, access_token_expires_at, refresh_token : For OAuth2 management.
+   *   - code, state, access_token, access_token_expires_at, refresh_token, last_authentification : For OAuth2 management.
    * @param $value The parameter value if to be set. 
+   * @param $clear If the $value is false and $clear is true, remove the value.
    * @return The parameter values.
    */
-  public function userData($name, $value = false) {
+  public function userData($name, $value = false, $clear = false) {
     $user_id = wp_get_current_user()->ID;
     if (!$this->user_data) {
       $this->user_data = get_user_meta($user_id, 'OpenClassroomsAPI/UserData', true);
@@ -344,24 +391,19 @@ class OpenClassroomsAPI {
     if ($value) {
       $this->user_data[$name] = $value;
       update_user_meta($user_id, 'OpenClassroomsAPI/UserData', $this->user_data);
+    } else if ($clear) {
+      $this->user_data[$name] = false;
+      update_user_meta($user_id, 'OpenClassroomsAPI/UserData', $this->user_data);
     }
     return isset($this->user_data[$name]) ? $this->user_data[$name] : false;
   }
   // This array contains all OpenClassroomsAPI user data and is managed by userData()
   private $user_data = false;
 
-  /** Retrieves the authentification parameters.
-   *  - This method must be overwitten for a non wordpress implementation.
-   * - In order to initially register the parameters:
-   *   - A <tt>.httpkeys</tt> PHP file must be present in the same directory as this source file (and never added to the svn !!!).
-   *   - It must contains the information in an array of the form <tt>&;lt;php $httpkeys = array(
-   *     - 'OAuth2/client_id'    => ..., // The OAuth2 client ID
-   *     - 'OAuth2/basic_auth'   => ..., // The OAuth2 login:passwd basic auth
-   *     - 'OAuth2/redirect_uri' => ..., // The OAuth2 rediect URI
-   *     - 'OAuth2/help_url'     => ..., // The user help url if the syndication fails
-   *     - 'OAuth2/log_email'    => ..., // The mail to send error logs, in any (optional)
-   *   ); ?></tt>
-   */
+  //////////////////
+
+  // Retrieves the authentification parameters.
+  // - This method uses the <tt>plugin_dir_path( __FILE__ )</tt> wordpress dependent routine.
   static private function getAuth($name = "") {
     if (!self::$httpkeys) {
       $httpkeys_file = plugin_dir_path( __FILE__ ).'.httpkeys';
@@ -378,10 +420,9 @@ class OpenClassroomsAPI {
   // This array contains all OpenClassroomsAPI authentification parameters
   private static $httpkeys = false;
 
-  //
-  // Manages an error at the user level
-  //  - Echoes the error page with message and redirects to the basic URI
-  // 
+  //////////////////
+
+  // Echoes the error page with message, and then redirects to the basic URI
   private static function errorPage($message) {
     echo '
 <html>
@@ -406,16 +447,18 @@ class OpenClassroomsAPI {
     exit;
   }
 
-  //
-  // Outputs and Mails logs in wordpress/wp-content/logs/OpenClassroomsAPI.log
-  //
-  public static function reportLog($message, $append = true) {
+  //////////////////
+
+  // Outputs and Mails logs in wordpress/wp-content/logs/OpenClassroomsAPI.log and on 'OAuth2/log_email'
+  private static function reportLog($message, $append = true) {
     $echo_file = get_home_path()."/wp-content/logs/OpenClassroomsAPI.log";
     $log_message = "\n[".date('c').", ".wp_get_current_user()->user_nicename."]".preg_replace("/\s+/", " ", $message)."\n";
     file_put_contents($echo_file, $log_message, $append ? FILE_APPEND : 0);
     if (self::getAuth('OAuth2/log_email'))
       mail(self::getAuth('OAuth2/log_email'),  "OpenClassroomsAPI log alert", $log_message, "Content-type: text/html; charset=utf-8\r\nContent-Transfer-Encoding: 8bit\r\n");
   }
+
+  //////////////////
 }
 $OpenClassroomsAPI = new OpenClassroomsAPI();
 ?>
