@@ -58,6 +58,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3ac6eaed3e94682a96f2a2c644698b3f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenClassroomsAPI.html#a3ac6eaed3e94682a96f2a2c644698b3f">userData</a> ($name, $value=false, $clear=false)</td></tr>
 <tr class="memdesc:a3ac6eaed3e94682a96f2a2c644698b3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets/Sets the <a class="el" href="classOpenClassroomsAPI.html" title="Defines the functionnalities to acces to the OpenClassroooms API. ">OpenClassroomsAPI</a> user data from the WP database.  <a href="#a3ac6eaed3e94682a96f2a2c644698b3f">More...</a><br /></td></tr>
 <tr class="separator:a3ac6eaed3e94682a96f2a2c644698b3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa37910dd6477f7ca8788cb07a15f1b5d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenClassroomsAPI.html#aa37910dd6477f7ca8788cb07a15f1b5d">noticePage</a> ()</td></tr>
+<tr class="memdesc:aa37910dd6477f7ca8788cb07a15f1b5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Echoes a notice on the redirect_uri page if it used as a transient bounce page.  <a href="#aa37910dd6477f7ca8788cb07a15f1b5d">More...</a><br /></td></tr>
+<tr class="separator:aa37910dd6477f7ca8788cb07a15f1b5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -68,9 +71,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a00a6312ae673bd8d4ff4c4157a9c9371"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenClassroomsAPI.html#a00a6312ae673bd8d4ff4c4157a9c9371">httpRequest</a> ($request)</td></tr>
 <tr class="memdesc:a00a6312ae673bd8d4ff4c4157a9c9371"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encasulates a HTTP GET or POST request using curl.  <a href="#a00a6312ae673bd8d4ff4c4157a9c9371">More...</a><br /></td></tr>
 <tr class="separator:a00a6312ae673bd8d4ff4c4157a9c9371"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ee5a57c2a898223f6a2c24c6a4152ad"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenClassroomsAPI.html#a0ee5a57c2a898223f6a2c24c6a4152ad">httpRedirect</a> ($url)</td></tr>
-<tr class="memdesc:a0ee5a57c2a898223f6a2c24c6a4152ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encapsulates a HTTP redirection.  <a href="#a0ee5a57c2a898223f6a2c24c6a4152ad">More...</a><br /></td></tr>
-<tr class="separator:a0ee5a57c2a898223f6a2c24c6a4152ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe0fef60b4e5895091369cecc5536762"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenClassroomsAPI.html#afe0fef60b4e5895091369cecc5536762">httpRedirect</a> ($url, $header=false)</td></tr>
+<tr class="memdesc:afe0fef60b4e5895091369cecc5536762"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encapsulates a HTTP redirection.  <a href="#afe0fef60b4e5895091369cecc5536762">More...</a><br /></td></tr>
+<tr class="separator:afe0fef60b4e5895091369cecc5536762"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90e53ef2394e00ce430ecc83d08cb7e5"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOpenClassroomsAPI.html#a90e53ef2394e00ce430ecc83d08cb7e5">getCurrentURL</a> ()</td></tr>
 <tr class="memdesc:a90e53ef2394e00ce430ecc83d08cb7e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the current HTTP URL.  <a href="#a90e53ef2394e00ce430ecc83d08cb7e5">More...</a><br /></td></tr>
 <tr class="separator:a90e53ef2394e00ce430ecc83d08cb7e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -92,13 +95,14 @@ Static Public Member Functions</h2></td></tr>
 </ul>
 </li>
 <li>Generic HTTP request and redirection methods:<ul>
-<li><a class="el" href="classOpenClassroomsAPI.html#a00a6312ae673bd8d4ff4c4157a9c9371" title="Encasulates a HTTP GET or POST request using curl. ">httpRequest()</a> <a class="el" href="classOpenClassroomsAPI.html#a0ee5a57c2a898223f6a2c24c6a4152ad" title="Encapsulates a HTTP redirection. ">httpRedirect()</a> and <a class="el" href="classOpenClassroomsAPI.html#a90e53ef2394e00ce430ecc83d08cb7e5" title="Gets the current HTTP URL. ">getCurrentURL()</a></li>
+<li><a class="el" href="classOpenClassroomsAPI.html#a00a6312ae673bd8d4ff4c4157a9c9371" title="Encasulates a HTTP GET or POST request using curl. ">httpRequest()</a> <a class="el" href="classOpenClassroomsAPI.html#afe0fef60b4e5895091369cecc5536762" title="Encapsulates a HTTP redirection. ">httpRedirect()</a> and <a class="el" href="classOpenClassroomsAPI.html#a90e53ef2394e00ce430ecc83d08cb7e5" title="Gets the current HTTP URL. ">getCurrentURL()</a></li>
 </ul>
 </li>
 <li>Wordpress dependent methods and error management<ul>
 <li>_construct() to hook the <a class="el" href="classOpenClassroomsAPI.html#a43f1815b4822632345c40f566372afb7" title="Implements the hook to manage redirection URL during OAuth2 token request. ">do_token_request()</a> method</li>
 <li><a class="el" href="classOpenClassroomsAPI.html#a3ac6eaed3e94682a96f2a2c644698b3f" title="Gets/Sets the OpenClassroomsAPI user data from the WP database. ">userData()</a> for remanent user data management,</li>
 <li>getAuth() secure local authentification parameters retrieval.</li>
+<li><a class="el" href="classOpenClassroomsAPI.html#aa37910dd6477f7ca8788cb07a15f1b5d" title="Echoes a notice on the redirect_uri page if it used as a transient bounce page. ">noticePage()</a> user level notice page to be echoed on the redirect_uri</li>
 <li>errorPage() user level error page if the syndication fails.</li>
 <li>reportLog() to report an error in the log system.</li>
 </ul>
@@ -109,7 +113,7 @@ Static Public Member Functions</h2></td></tr>
 <li>It must contains the information in an array of the form <code>&lt;php $httpkeys = array(</code><ul>
 <li>'OAuth2/client_id' =&gt; ..., // The OAuth2 client ID</li>
 <li>'OAuth2/basic_auth' =&gt; ..., // The OAuth2 login:passwd basic auth</li>
-<li>'OAuth2/redirect_uri' =&gt; ..., // The OAuth2 rediect URI</li>
+<li>'OAuth2/redirect_uri' =&gt; ..., // The OAuth2 redirect URI</li>
 <li>'OAuth2/help_url' =&gt; ..., // The user help url if the syndication fails</li>
 <li>'OAuth2/log_email' =&gt; ..., // The mail to send error logs, in any (optional) <code>); ?&gt;</code></li>
 </ul>
@@ -121,7 +125,7 @@ Static Public Member Functions</h2></td></tr>
 <dd>
 <a href="http://docs.openclassrooms.apiary.io/#">http://docs.openclassrooms.apiary.io/#</a> for OpenClassrooms documentation </dd></dl>
 
-<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00040">40</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00041">41</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a3244fc0813f2d4ced2617cda9e4adb76"></a>
 <div class="memitem">
@@ -138,9 +142,9 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Clears the OAuth2 data in order to restart an authentification. </p>
 
-<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00178">178</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00184">184</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
 
-<p>References <a class="el" href="OpenClassroomsAPI_8php_source.html#l00382">userData()</a>.</p>
+<p>References <a class="el" href="OpenClassroomsAPI_8php_source.html#l00398">userData()</a>.</p>
 
 </div>
 </div>
@@ -166,9 +170,9 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00185">185</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00191">191</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
 
-<p>References <a class="el" href="OpenClassroomsAPI_8php_source.html#l00382">userData()</a>.</p>
+<p>References <a class="el" href="OpenClassroomsAPI_8php_source.html#l00398">userData()</a>.</p>
 
 </div>
 </div>
@@ -191,11 +195,11 @@ Static Public Member Functions</h2></td></tr>
 </li>
 </ul>
 
-<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00133">133</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00134">134</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
 
-<p>References <a class="el" href="OpenClassroomsAPI_8php_source.html#l00382">userData()</a>.</p>
+<p>References <a class="el" href="OpenClassroomsAPI_8php_source.html#l00398">userData()</a>.</p>
 
-<p>Referenced by <a class="el" href="OpenClassroomsAPI_8php_source.html#l00064">getUserLearningActivity()</a>.</p>
+<p>Referenced by <a class="el" href="OpenClassroomsAPI_8php_source.html#l00065">getUserLearningActivity()</a>.</p>
 
 </div>
 </div>
@@ -222,7 +226,7 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Gets the current HTTP URL. </p>
 
-<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00353">353</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00369">369</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
 
 </div>
 </div>
@@ -260,13 +264,13 @@ Static Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>the userData user_learning_activity field or false if the operation fails. See usedData() for details. </dd></dl>
 
-<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00064">64</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00065">65</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
 
-<p>References <a class="el" href="OpenClassroomsAPI_8php_source.html#l00133">getAccessToken()</a>, and <a class="el" href="OpenClassroomsAPI_8php_source.html#l00382">userData()</a>.</p>
+<p>References <a class="el" href="OpenClassroomsAPI_8php_source.html#l00134">getAccessToken()</a>, and <a class="el" href="OpenClassroomsAPI_8php_source.html#l00398">userData()</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a0ee5a57c2a898223f6a2c24c6a4152ad"></a>
+<a class="anchor" id="afe0fef60b4e5895091369cecc5536762"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -277,8 +281,18 @@ Static Public Member Functions</h2></td></tr>
           <td class="memname">static OpenClassroomsAPI::httpRedirect </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>$url</em></td><td>)</td>
+          <td class="paramname"><em>$url</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$header</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -293,13 +307,14 @@ Static Public Member Functions</h2></td></tr>
 <li>The methods output javascript to replace the location and not header("Location : $url") because some HTML may have previously output. <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">$url</td><td>The redirection URL. </td></tr>
+    <tr><td class="paramname">$header</td><td>If true uses the HTTP header directive, if false use a piece of javascript. </td></tr>
   </table>
   </dd>
 </dl>
 </li>
 </ul>
 
-<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00345">345</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00358">358</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
 
 </div>
 </div>
@@ -354,7 +369,44 @@ Static Public Member Functions</h2></td></tr>
 </li>
 </ul>
 
-<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00243">243</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00255">255</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa37910dd6477f7ca8788cb07a15f1b5d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">OpenClassroomsAPI::noticePage </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Echoes a notice on the redirect_uri page if it used as a transient bounce page. </p>
+<ul>
+<li>This methods<ul>
+<li>echoes a default page and exits if the <a class="el" href="classOpenClassroomsAPI.html" title="Defines the functionnalities to acces to the OpenClassroooms API. ">OpenClassroomsAPI</a> call does not origin from the redirect_uri page.</li>
+<li>and simply returns otherwise</li>
+</ul>
+</li>
+<li>Typical use is:<pre>
+ // Loading the PHP functions
+ require_once("../../../../wp-load.php");                         
+ include_once(plugin_dir_path( <b>FILE</b> ).'./OpenClassroomsAPI.php');
+ // Echoes the notice page or redirect towards the home page
+ if (wp_get_current_user()-&gt;ID &gt; 0)
+   $OpenClassroomsAPI-&gt;<a class="el" href="classOpenClassroomsAPI.html#aa37910dd6477f7ca8788cb07a15f1b5d" title="Echoes a notice on the redirect_uri page if it used as a transient bounce page. ">noticePage()</a>;
+ OpenClassroomsAPI::httpRedirect(get_site_url(), true);
+</pre> </li>
+</ul>
+
+<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00481">481</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+
+<p>References <a class="el" href="OpenClassroomsAPI_8php_source.html#l00398">userData()</a>.</p>
 
 </div>
 </div>
@@ -379,9 +431,9 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00048">48</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00049">49</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
 
-<p>References <a class="el" href="OpenClassroomsAPI_8php_source.html#l00463">$OpenClassroomsAPI</a>.</p>
+<p>References <a class="el" href="OpenClassroomsAPI_8php_source.html#l00517">$OpenClassroomsAPI</a>.</p>
 
 </div>
 </div>
@@ -406,9 +458,9 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00043">43</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00044">44</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
 
-<p>References <a class="el" href="OpenClassroomsAPI_8php_source.html#l00463">$OpenClassroomsAPI</a>.</p>
+<p>References <a class="el" href="OpenClassroomsAPI_8php_source.html#l00517">$OpenClassroomsAPI</a>.</p>
 
 </div>
 </div>
@@ -471,7 +523,7 @@ Static Public Member Functions</h2></td></tr>
 </ul>
 </li>
 <li>Registered by the <a class="el" href="classOpenClassroomsAPI.html#aee6001a4b84f74a23bde0f3ce6d5f3b4" title="Encapsulates a OAuth2 token request. ">getAccessToken()</a> method<ul>
-<li>code, state, access_token, access_token_expires_at, refresh_token, last_authentification : For OAuth2 management. <dl class="params"><dt>Parameters</dt><dd>
+<li>code, state, access_token, access_token_expires_at, refresh_token, last_authentification, referer_uri : For OAuth2 management. <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">$value</td><td>The parameter value if to be set. </td></tr>
     <tr><td class="paramname">$clear</td><td>If the $value is false and $clear is true, remove the value. </td></tr>
@@ -484,9 +536,9 @@ Static Public Member Functions</h2></td></tr>
 </li>
 </ul>
 
-<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00382">382</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
+<p>Definition at line <a class="el" href="OpenClassroomsAPI_8php_source.html#l00398">398</a> of file <a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a>.</p>
 
-<p>Referenced by <a class="el" href="OpenClassroomsAPI_8php_source.html#l00178">clearAccessToken()</a>, <a class="el" href="OpenClassroomsAPI_8php_source.html#l00185">do_token_request()</a>, <a class="el" href="OpenClassroomsAPI_8php_source.html#l00133">getAccessToken()</a>, and <a class="el" href="OpenClassroomsAPI_8php_source.html#l00064">getUserLearningActivity()</a>.</p>
+<p>Referenced by <a class="el" href="OpenClassroomsAPI_8php_source.html#l00184">clearAccessToken()</a>, <a class="el" href="OpenClassroomsAPI_8php_source.html#l00191">do_token_request()</a>, <a class="el" href="OpenClassroomsAPI_8php_source.html#l00134">getAccessToken()</a>, <a class="el" href="OpenClassroomsAPI_8php_source.html#l00065">getUserLearningActivity()</a>, and <a class="el" href="OpenClassroomsAPI_8php_source.html#l00481">noticePage()</a>.</p>
 
 </div>
 </div>
@@ -494,4 +546,4 @@ Static Public Member Functions</h2></td></tr>
 <li><a class="el" href="OpenClassroomsAPI_8php_source.html">OpenClassroomsAPI.php</a></li>
 </ul>
 </div><!-- contents -->
-<hr/><div align='right'><tt>Class'Code middleware (version of 2016-12-04 at 18:20:12) </tt> </div><hr/></body></html>
+<hr/><div align='right'><tt>Class'Code middleware (version of 2016-12-06 at 18:39:02) </tt> </div><hr/></body></html>

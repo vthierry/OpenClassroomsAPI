@@ -18,6 +18,7 @@
  *   - _construct() to hook the do_token_request() method
  *   - userData() for remanent user data management, 
  *   - getAuth() secure local authentification parameters retrieval.
+ *   - noticePage() user level notice page to be echoed on the redirect_uri
  *   - errorPage() user level error page if the syndication fails.
  *   - reportLog() to report an error in the log system.
  *
@@ -26,7 +27,7 @@
  * - It must contains the information in an array of the form <tt>&lt;php $httpkeys = array(</tt>
  *   - 'OAuth2/client_id'    => ..., // The OAuth2 client ID
  *   - 'OAuth2/basic_auth'   => ..., // The OAuth2 login:passwd basic auth
- *   - 'OAuth2/redirect_uri' => ..., // The OAuth2 rediect URI
+ *   - 'OAuth2/redirect_uri' => ..., // The OAuth2 redirect URI
  *   - 'OAuth2/help_url'     => ..., // The user help url if the syndication fails
  *   - 'OAuth2/log_email'    => ..., // The mail to send error logs, in any (optional)
  * <tt>); ?></tt>
@@ -170,6 +171,11 @@ class OpenClassroomsAPI {
     } else {
       $this->userData('last_authentification', time());
     }
+    // Registers the referering uri to return on it
+    if (self::getCurrentURL() != self::getAuth('OAuth2/redirect_uri'))
+      $this->userData('referer_uri', self::getCurrentURL());
+    else
+      $this->userData('referer_uri', false, true);
     // Switchs to the authentification URL
     self::httpRedirect('https://openclassrooms.com/oauth2/authorize?response_type=code&scope=user_email%20user_public_profile%20user_learning_activity&client_id='.urlencode(self::getAuth('OAuth2/client_id')).'&redirect_uri='.urlencode(self::getAuth('OAuth2/redirect_uri')).'&state='.$this->userData('state'));
   }
@@ -205,6 +211,12 @@ class OpenClassroomsAPI {
 	self::reportLog("OpenClassroomsAPI::do_token_request: access token error".print_r($acces_token_request, true));
 	self::errorPage("Il y a un problème de synchronisation avec OpenClassrooms");
       }
+    }
+    // Returns to the referer URI if any
+    if ($this->userData('referer_uri')) {
+      $referer_uri = $this->userData('referer_uri');
+      $this->userData('referer_uri', false, true);
+      self::httpRedirect($referer_uri);
     }
     return $request;
   }
@@ -341,9 +353,13 @@ class OpenClassroomsAPI {
   /** Encapsulates a HTTP redirection. 
    * - The methods output javascript to replace the location and not header("Location : $url") because some HTML may have previously output.
    * @param $url The redirection URL.
+   * @param $header If true uses the HTTP header directive, if false use a piece of javascript.
    */
-  public static function httpRedirect($url) {
-    echo '<script language="javascript">location.replace("'.$url.'");</script>';
+  public static function httpRedirect($url, $header = false) {
+    if ($header)
+      header('location: '.$url);
+    else
+      echo '<script language="javascript">location.replace("'.$url.'");</script>';
     exit(0);
   }
 
@@ -374,7 +390,7 @@ class OpenClassroomsAPI {
    *     - @see http://docs.openclassrooms.apiary.io/#reference/learning-activity/courses-followed-by-a-user/get-followed-courses-with-user-information 
    *     - @see http://docs.openclassrooms.apiary.io/#reference/learning-activity/table-of-content-with-user-information/get-table-of-content-with-user-information
    * - Registered by the getAccessToken() method
-   *   - code, state, access_token, access_token_expires_at, refresh_token, last_authentification : For OAuth2 management.
+   *   - code, state, access_token, access_token_expires_at, refresh_token, last_authentification, referer_uri : For OAuth2 management.
    * @param $value The parameter value if to be set. 
    * @param $clear If the $value is false and $clear is true, remove the value.
    * @return The parameter values.
@@ -424,6 +440,7 @@ class OpenClassroomsAPI {
 
   // Echoes the error page with message, and then redirects to the basic URI
   private static function errorPage($message) {
+    $referer = $this->userData('referer_uri') ? $this->userData('referer_uri') : self::getAuth('OAuth2/redirect_uri');     
     echo '
 <html>
  <head>
@@ -437,14 +454,51 @@ class OpenClassroomsAPI {
     <td style="margin:40px;width:40%">
       <h2>Upps !!! '.$message.'</h2>
       <h3>Renouveler la demande dans quelques instants.<h3>
-      <h4 style="padding-left:20px;">(vous allez être <a href="'.self::getAuth('OAuth2/redirect_uri').'">redirigé</a> dans 5 secondes).</h4>
+      <h4 style="padding-left:20px;">(vous allez être <a href="'.$referer.'">redirigé</a> dans 5 secondes).</h4>
       <h3>Sinon <a href="'.self::getAuth('OAuth2/help_url').'">rapporter</a> cette erreur si elle se reproduit.</h3>
     </td>
     </tr></table>
-    <script language="javascript">setTimeout(function() { window.location = "'.self::getAuth('OAuth2/redirect_uri').'"; }, 7 * 1000);</script>
+    <script language="javascript">setTimeout(function() { window.location = "'.$referer.'"; }, 7 * 1000);</script>
   </body>
 </html>';
-    exit;
+    exit(0);
+  }
+
+  /** Echoes a notice on the redirect_uri page if it used as a transient bounce page. 
+   * - This methods 
+   *   - echoes a default page and exits if the OpenClassroomsAPI call does not origin from the redirect_uri page.
+   *   - and simply returns otherwise
+   * - Typical use is:<pre>
+   * // Loading the PHP functions
+   * require_once("../../../../wp-load.php");                         
+   * include_once(plugin_dir_path( __FILE__ ).'./OpenClassroomsAPI.php');
+   * // Echoes the notice page or redirect towards the home page
+   * if (wp_get_current_user()->ID > 0)
+   *   $OpenClassroomsAPI->noticePage();
+   * OpenClassroomsAPI::httpRedirect(get_site_url(), true);
+   *</pre>
+   */
+  public function noticePage() {
+    if($this->userData('referer_uri')) {
+      echo '
+<html>
+ <head>
+    <meta charset="utf-8"/>    
+    <title>Rebond de syndication avec OpenClassrooms</title>
+  </head>
+  <body style="padding:0px;margin-left:auto;margin-right:auto;background-color:white"><table><tr>
+    <td style="margin:40px;width:40%">
+      <img style="margin:40px;" src="https://openclassrooms.com/bundles/common/images/zozor_404.png"/>
+    </td>
+    <td style="margin:40px;width:40%">
+       <p>Vous arrivez sur cette page rebond car vous êtes en train de synchroniserxs vos données Class´Code avec celles sur OpenClassrooms.</p>
+       <p>Vous devriez être redirigé, sinon il y a eu un souci, retournez alors à la page précédente, et <a href="'.self::getAuth('OAuth2/help_url').'">rapporter</a> cette erreur si elle se reproduit.</p>
+    </td>
+    </tr></table>
+  </body>
+</html>';
+    exit(0);
+    }
   }
 
   //////////////////
