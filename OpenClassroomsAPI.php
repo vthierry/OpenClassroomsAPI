@@ -12,10 +12,10 @@
  *   - getUserLearningActivity()
  * - OAuth2 token request method: 
  *   - getAccessToken() encapsultates the OAuth2 protocol
+ *   - do_token_request() the http hook that manages OAuth2 redirection.
  * - Generic HTTP request and redirection methods: 
  *   - httpRequest() httpRedirect() and getCurrentURL()
  * - Wordpress dependent methods and error management
- *   - _construct() to hook the do_token_request() method
  *   - userData() for remanent user data management, 
  *   - getAuth() secure local authentification parameters retrieval.
  *   - noticePage() user level notice page to be echoed on the redirect_uri
@@ -40,17 +40,6 @@
  */
 class OpenClassroomsAPI {
 
-  // Tests the interface
-  public static function test() { 
-    global $OpenClassroomsAPI;
-    $OpenClassroomsAPI->do_token_request($_REQUEST);
-    echo "<pre>running ...</pre>"; echo "<pre>".print_r($OpenClassroomsAPI->getUserLearningActivity(true, true), true)."</pre>";
-  }
-  public static function reset() { 
-    global $OpenClassroomsAPI;
-    echo "<pre>cleaning ...</pre>"; $OpenClassroomsAPI->clearAccessToken();
-  }
-  
   ////////////////////////////////////////////////////////////////////////////////
   
   //
@@ -167,7 +156,7 @@ class OpenClassroomsAPI {
   private function do_authentification() {
     // Prevents from repetitive authentification failures
     if ($this->userData('last_authentification') && (time() - $this->userData('last_authentification') < 60)) {
-      self::errorPage("Il y a un problème d'authentification avec OpenClassrooms (échec il y a ".(time() - $this->userData('last_authentification'))." secondes, moins d'une minute)");
+      self::errorPage("Il y a un problème d'authentification avec OpenClassrooms (échec il y a ".(time() - $this->userData('last_authentification'))." secondes, moins d'une minute), vous venez probablement de l'annuler");
     } else {
       $this->userData('last_authentification', time());
     }
@@ -225,7 +214,7 @@ class OpenClassroomsAPI {
    * \private
    */
   function __construct() {
-    add_filter('request', array($this, 'do_token_request'), 1, 1);
+    //Not in use, do_token_request is explictly called in the redirection page, add_filter('request', array($this, 'do_token_request'), 1, 1);
   }
 
   ////////////////////////////////////////////////////////////////////////////////
@@ -439,7 +428,7 @@ class OpenClassroomsAPI {
   //////////////////
 
   // Echoes the error page with message, and then redirects to the basic URI
-  private static function errorPage($message) {
+  private function errorPage($message) {
     $referer = $this->userData('referer_uri') ? $this->userData('referer_uri') : self::getAuth('OAuth2/redirect_uri');     
     echo '
 <html>
@@ -472,9 +461,11 @@ class OpenClassroomsAPI {
    * // Loading the PHP functions
    * require_once("../../../../wp-load.php");                         
    * include_once(plugin_dir_path( __FILE__ ).'./OpenClassroomsAPI.php');
-   * // Echoes the notice page or redirect towards the home page
-   * if (wp_get_current_user()->ID > 0)
+   * // Hooks the OAuth2 redirection, else echoes the notice page or redirect towards the home page
+   * if (wp_get_current_user()->ID > 0) {
+   *   $OpenClassroomsAPI->do_token_request($_REQUEST);
    *   $OpenClassroomsAPI->noticePage();
+   * }
    * OpenClassroomsAPI::httpRedirect(get_site_url(), true);
    *</pre>
    */
@@ -513,6 +504,18 @@ class OpenClassroomsAPI {
   }
 
   //////////////////
+
+  /* Tests the interface
+  public static function test() { 
+    global $OpenClassroomsAPI;
+    $OpenClassroomsAPI->do_token_request($_REQUEST);
+    echo "<pre>running ...</pre>"; echo "<pre>".print_r($OpenClassroomsAPI->getUserLearningActivity(true, true), true)."</pre>";
+  }
+  public static function reset() { 
+    global $OpenClassroomsAPI;
+    echo "<pre>cleaning ...</pre>"; $OpenClassroomsAPI->clearAccessToken();
+  }
+  */
 }
 $OpenClassroomsAPI = new OpenClassroomsAPI();
 ?>
